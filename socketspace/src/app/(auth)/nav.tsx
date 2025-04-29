@@ -15,6 +15,7 @@ import {
 export default function Navbar() {
   const [activeDialog, setActiveDialog] = useState<string>("");
   const { user } = useUser();
+  // isSignedIn is available from useUser but not used here
 
   const openDialog = (dialogName: string) => {
     setActiveDialog(dialogName);
@@ -98,7 +99,7 @@ export default function Navbar() {
             <div className="text-blue-100">
               {activeDialog === 'contact' && (
                 <div>
-                  <p className="mb-4">Have questions or need assistance? We're here to help!</p>
+                  <p className="mb-4">Have questions or need assistance? We&apos;re here to help!</p>
                   <ul className="space-y-2">
                     <li><span className="text-blue-300 mr-2">Email:</span> sjce.nagarjunts@gmail.com</li>
                     <li><span className="text-blue-300 mr-2">Phone:</span> +91 7975574903</li>
@@ -121,7 +122,7 @@ export default function Navbar() {
               {activeDialog === 'about' && (
                 <div>
                   <p className="mb-4">Socketspace is a modern communication platform with a mission to make real-time messaging secure, fast, and accessible.</p>
-                  <p>This is basically a small mini project idea. It's a simple yet effective.</p>
+                  <p>This is basically a small mini project idea. It&apos;s a simple yet effective.</p>
                 </div>
               )}
             </div>
