@@ -2,7 +2,6 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-// import { MessageSquare, Shield, Layout, User, LogOut } from 'lucide-react'; // Reserved for future use
 import { X } from 'lucide-react';
 import {
   SignInButton,
@@ -14,15 +13,15 @@ import {
 } from "@clerk/nextjs";
 
 export default function Navbar() {
-  const [activeDialog, setActiveDialog] = useState(null);
-  const { user } = useUser(); // isSignedIn is not used yet
+  const [activeDialog, setActiveDialog] = useState<string>("");
+  const { user } = useUser();
 
-  const openDialog = (dialogName) => {
+  const openDialog = (dialogName: string) => {
     setActiveDialog(dialogName);
   };
 
   const closeDialog = () => {
-    setActiveDialog(null);
+    setActiveDialog("");
   };
 
   return (
@@ -122,8 +121,7 @@ export default function Navbar() {
               {activeDialog === 'about' && (
                 <div>
                   <p className="mb-4">Socketspace is a modern communication platform with a mission to make real-time messaging secure, fast, and accessible.</p>
-                  <p>This is basically a small mini project idea. It&apos;s simple yet effective.</p>  // Fixed apostrophe
-
+                  <p>This is basically a small mini project idea. It's a simple yet effective.</p>
                 </div>
               )}
             </div>
@@ -131,7 +129,7 @@ export default function Navbar() {
         </div>
       )}
 
-      <style jsx global>{`
+      <style jsx>{`
         @keyframes fade-in-up {
           0% { opacity: 0; transform: translateY(20px); }
           100% { opacity: 1; transform: translateY(0); }
