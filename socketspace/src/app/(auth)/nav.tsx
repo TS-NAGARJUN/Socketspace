@@ -122,7 +122,8 @@ export default function Navbar() {
               {activeDialog === 'about' && (
                 <div>
                   <p className="mb-4">Socketspace is a modern communication platform with a mission to make real-time messaging secure, fast, and accessible.</p>
-                  <p>This is basically a small mini project idea.</p>
+                  <p>This is basically a small mini project idea. It&apos;s simple yet effective.</p>  // Fixed apostrophe
+
                 </div>
               )}
             </div>
