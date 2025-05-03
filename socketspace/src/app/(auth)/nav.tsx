@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import { X } from 'lucide-react';
+import { X, Menu } from 'lucide-react';
 import {
   SignInButton,
   SignUpButton,
@@ -14,43 +14,39 @@ import {
 
 export default function Navbar() {
   const [activeDialog, setActiveDialog] = useState<string>("");
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { user } = useUser();
-  // isSignedIn is available from useUser but not used here
 
   const openDialog = (dialogName: string) => {
     setActiveDialog(dialogName);
+    setIsMenuOpen(false); // Close menu on mobile when dialog opens
   };
 
-  const closeDialog = () => {
-    setActiveDialog("");
-  };
+  const closeDialog = () => setActiveDialog("");
+  const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
 
   return (
     <>
       <nav className="bg-gray-900 bg-opacity-90 backdrop-blur-sm border-b border-blue-800 px-6 py-4 sticky top-0 z-50">
-        <div className="max-w-6xl mx-auto flex flex-wrap justify-between items-center">
-          <div className="flex items-center">
-            <Link href="/" className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-teal-400">
-              Socketspace
-            </Link>
-          </div>
+        <div className="max-w-6xl mx-auto flex justify-between items-center">
+          <Link href="/" className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-teal-400">
+            Socketspace
+          </Link>
 
-          <div className="flex items-center space-x-6">
-            <button onClick={() => openDialog('contact')} className="text-blue-300 hover:text-blue-100 transition">
-              Contact Us
-            </button>
-            <button onClick={() => openDialog('guidelines')} className="text-blue-300 hover:text-blue-100 transition">
-              Guidelines
-            </button>
-            <button onClick={() => openDialog('about')} className="text-blue-300 hover:text-blue-100 transition">
-              About Us
-            </button>
+          {/* Hamburger Icon for Mobile */}
+          <button onClick={toggleMenu} className="md:hidden text-blue-300 hover:text-blue-100 focus:outline-none">
+            {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
+          </button>
+
+          {/* Desktop Menu */}
+          <div className="hidden md:flex items-center space-x-6">
+            <button onClick={() => openDialog('contact')} className="text-blue-300 hover:text-blue-100 transition">Contact Us</button>
+            <button onClick={() => openDialog('guidelines')} className="text-blue-300 hover:text-blue-100 transition">Guidelines</button>
+            <button onClick={() => openDialog('about')} className="text-blue-300 hover:text-blue-100 transition">About Us</button>
 
             <SignedIn>
               <div className="flex items-center space-x-4">
-                <span className="text-blue-300">
-                  {user?.firstName ? `Hi, ${user.firstName}` : 'Welcome'}
-                </span>
+                <span className="text-blue-300">{user?.firstName ? `Hi, ${user.firstName}` : 'Welcome'}</span>
                 <UserButton
                   afterSignOutUrl="/"
                   appearance={{
@@ -65,22 +61,52 @@ export default function Navbar() {
             <SignedOut>
               <div className="flex items-center space-x-3">
                 <SignInButton mode="modal">
-                  <button className="px-4 py-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-md transition">
-                    Sign In
-                  </button>
+                  <button className="px-4 py-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-md transition">Sign In</button>
                 </SignInButton>
-
                 <SignUpButton mode="modal">
-                  <button className="px-4 py-2 text-sm font-medium border border-blue-600 text-blue-300 hover:bg-blue-800 hover:bg-opacity-20 rounded-md transition">
-                    Sign Up
-                  </button>
+                  <button className="px-4 py-2 text-sm font-medium border border-blue-600 text-blue-300 hover:bg-blue-800 hover:bg-opacity-20 rounded-md transition">Sign Up</button>
                 </SignUpButton>
               </div>
             </SignedOut>
           </div>
         </div>
+
+        {/* Mobile Dropdown Menu */}
+        {isMenuOpen && (
+          <div className="md:hidden mt-4 space-y-3 px-2">
+            <button onClick={() => openDialog('contact')} className="block w-full text-left text-blue-300 hover:text-blue-100 transition">Contact Us</button>
+            <button onClick={() => openDialog('guidelines')} className="block w-full text-left text-blue-300 hover:text-blue-100 transition">Guidelines</button>
+            <button onClick={() => openDialog('about')} className="block w-full text-left text-blue-300 hover:text-blue-100 transition">About Us</button>
+
+            <SignedIn>
+              <div className="mt-2 flex items-center justify-between px-2">
+                <span className="text-blue-300">{user?.firstName ? `Hi, ${user.firstName}` : 'Welcome'}</span>
+                <UserButton
+                  afterSignOutUrl="/"
+                  appearance={{
+                    elements: {
+                      userButtonAvatarBox: "w-8 h-8 border-2 border-blue-400 rounded-full"
+                    }
+                  }}
+                />
+              </div>
+            </SignedIn>
+
+            <SignedOut>
+              <div className="flex flex-col gap-2 mt-2">
+                <SignInButton mode="modal">
+                  <button className="w-full px-4 py-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-md transition">Sign In</button>
+                </SignInButton>
+                <SignUpButton mode="modal">
+                  <button className="w-full px-4 py-2 text-sm font-medium border border-blue-600 text-blue-300 hover:bg-blue-800 hover:bg-opacity-20 rounded-md transition">Sign Up</button>
+                </SignUpButton>
+              </div>
+            </SignedOut>
+          </div>
+        )}
       </nav>
 
+      {/* Dialog Logic (unchanged) */}
       {activeDialog && (
         <div className="fixed inset-0 flex items-center justify-center z-50">
           <div className="absolute inset-0 bg-black bg-opacity-60 backdrop-blur-sm" onClick={closeDialog}></div>
@@ -95,7 +121,6 @@ export default function Navbar() {
                 <X size={20} />
               </button>
             </div>
-
             <div className="text-blue-100">
               {activeDialog === 'contact' && (
                 <div>
@@ -125,7 +150,6 @@ export default function Navbar() {
                   <p>This is basically a small mini project idea.  {"It's"} a simple yet effective.</p>
                 </div>
               )}
-              
             </div>
           </div>
         </div>

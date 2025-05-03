@@ -38,7 +38,7 @@ export default function Home() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 to-blue-900 text-white">
+    <div className="min-h-screen   bg-gradient-to-br from-gray-900 to-blue-900 text-white">
       {/* Main Content */}
       <div className="max-w-6xl mx-auto p-8">
         {/* Header with animated text */}
