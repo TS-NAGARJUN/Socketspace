@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 
-const Search = () => {
+const search = () => {
   const [friendName, setFriendName] = useState('');
 
   // Handle input change
@@ -64,4 +64,4 @@ const Search = () => {
   );
 };
 
-export default Search;
+export default search;

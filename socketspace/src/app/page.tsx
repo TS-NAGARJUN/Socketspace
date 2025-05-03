@@ -40,7 +40,7 @@ export default function Home() {
 
   const handleGetStarted = () => {
     if (isSignedIn) {
-      router.push('/app/search/page.tsx');
+      router.push('/search');
     } else {
       alert('Please sign in first.');
     }
